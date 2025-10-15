@@ -26,7 +26,7 @@ const userDeleted = inngest.createFunction(
   {event: "clerk/user.deleted"},
   async ({event, step}) => {
     const {id} = event.data;
-    await User.findByIdAndDelete({id});
+    await User.findByIdAndDelete({_id: id});
   }
 );
 
@@ -41,7 +41,7 @@ const userUpdated = inngest.createFunction(
       name: first_name + " " + last_name,
       image: image_url,
     };
-    await User.findByIdAndUpdate(id, userData);
+    await User.findByIdAndUpdate({_id: id}, userData);
   }
 );
 
