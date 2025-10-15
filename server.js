@@ -16,14 +16,7 @@ const URL = process.env.MONGO_URL;
 app.use(clerkMiddleware());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-
-app.use(
-  cors({
-    origin: ["http://localhost:8000", "http://localhost:5173"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
+app.use(cors());
 
 // Set up the "/api/inngest" (recommended) routes with the serve handler
 app.use("/api/inngest", serve({client: inngest, functions}));

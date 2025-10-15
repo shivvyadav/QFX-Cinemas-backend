@@ -8,7 +8,7 @@ export const inngest = new Inngest({id: "qfxcinema"});
 const userSignup = inngest.createFunction(
   {id: "user/signup"},
   {event: "clerk/user.created"},
-  async ({event, step}) => {
+  async ({event}) => {
     const {id, first_name, last_name, email_addresses, image_url} = event.data;
     const userData = {
       _id: id,
@@ -26,7 +26,7 @@ const userDeleted = inngest.createFunction(
   {event: "clerk/user.deleted"},
   async ({event, step}) => {
     const {id} = event.data;
-    await User.findByIdAndDelete({_id: id});
+    await User.findByIdAndDelete(id);
   }
 );
 
@@ -37,6 +37,7 @@ const userUpdated = inngest.createFunction(
   async ({event, step}) => {
     const {id, first_name, last_name, email_addresses, image_url} = event.data;
     const userData = {
+      _id: id,
       email: email_addresses[0].email_address,
       name: first_name + " " + last_name,
       image: image_url,
