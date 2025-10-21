@@ -10,7 +10,7 @@ export const isAdmin = async (req, res, next) => {
     if (user.privateMetadata.role === "admin") {
       return next();
     }
-    return res.status(403).json({message: "Access denied : Admins only"});
+    return res.json({message: "Access denied : Admins only"});
   } catch (error) {
     console.error("Admin check error:", error);
     return res.status(500).json({message: "Server error during admin check."});
