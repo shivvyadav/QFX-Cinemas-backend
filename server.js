@@ -4,22 +4,18 @@ import express from "express";
 import {clerkMiddleware} from "@clerk/express";
 import cors from "cors";
 import mongoose from "mongoose";
-import axios from "axios";
 import {serve} from "inngest/express";
 import {inngest, functions} from "./inngest/index.js";
+import showRouter from "./routes/showRoute.js";
+import upcomingRouter from "./routes/upcomingRoute.js";
+import contactRouter from "./routes/contactRoute.js";
+import movieDetailRouter from "./routes/movieDetailRouter.js";
+import adminRouter from "./routes/adminRoute.js";
+import bookingRouter from "./routes/bookingRoute.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const URL = process.env.MONGO_URL;
-
-// Middleware
-app.use(clerkMiddleware());
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-app.use(cors());
-
-// Set up the "/api/inngest" (recommended) routes with the serve handler
-app.use("/api/inngest", serve({client: inngest, functions}));
 
 // Connect to MongoDB
 mongoose
@@ -27,9 +23,24 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.log(err));
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+// cron
+import "./utils/bookingExpiryCron.js";
+
+// Middleware
+app.use(clerkMiddleware());
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(cors());
+
+// api routes
+app.get("/", (req, res) => res.send("Hello World!"));
+app.use("/api/inngest", serve({client: inngest, functions}));
+app.use("/api/shows", showRouter);
+app.use("/api/movieDetail", movieDetailRouter);
+app.use("/api/movies", upcomingRouter);
+app.use("/api/contact", contactRouter);
+app.use("/api/bookings", bookingRouter);
+app.use("/api/admin", adminRouter);
 
 // Start the server
 app.listen(PORT, () => {

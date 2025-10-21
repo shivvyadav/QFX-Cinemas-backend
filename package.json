@@ -21,6 +21,8 @@
     "express": "^5.1.0",
     "inngest": "^3.44.3",
     "mongoose": "^8.19.0",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^7.0.9",
     "passport-local-mongoose": "^8.0.0"
   }
 }
