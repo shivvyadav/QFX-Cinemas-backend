@@ -1,5 +1,7 @@
 import axios from "axios";
 import {languageMap} from "../utils/languageMap.js";
+import Movie from "../models/Movie.js";
+import {MovieDetail} from "../init/movieDetail.js";
 
 const TMDB_KEY = process.env.TMDB_API_KEY;
 const TMDB_BASE = "https://api.themoviedb.org/3";
@@ -8,7 +10,7 @@ const IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
 // helper to build poster/profile urls
 const imageUrl = (path) => (path ? `${IMAGE_BASE}${path}` : null);
 
-// 3) Upcoming movies
+// get Upcoming movies
 export const getUpcoming = async (req, res) => {
   const region = req.query.region || "IN"; // or 'NP'
   try {
@@ -23,6 +25,12 @@ export const getUpcoming = async (req, res) => {
       language: languageMap[m.original_language] || m.original_language,
     }));
     res.json({results});
+    results.forEach(async (m) => {
+      const exists = await Movie.findById(m._id);
+      if (!exists) {
+        await MovieDetail(m._id);
+      }
+    });
   } catch (err) {
     console.error(err?.response?.data || err.message);
     res.status(500).json({error: "failed to fetch upcoming movies"});

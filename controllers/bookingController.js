@@ -1,5 +1,7 @@
-import booking from "../models/booking.js";
+import {sendBookingEmail} from "../utils/sendEmail.js";
 import Show from "../models/Show.js";
+import booking from "../models/booking.js";
+import User from "../models/User.js";
 
 export const createBooking = async (req, res) => {
   try {
@@ -36,10 +38,24 @@ export const createBooking = async (req, res) => {
 
     await foundShow.save();
 
+    // Fetch user email
+    const user = await User.findById(userId);
+    if (user?.email) {
+      await sendBookingEmail(user.email, {
+        movieTitle: foundShow.title,
+        poster: foundShow.poster,
+        date,
+        time,
+        seats,
+        totalAmount,
+        paymentMethod,
+      });
+    }
+
     res.status(201).json({
       success: true,
       message: "Booking created successfully!",
-      booking,
+      booking: newBooking,
     });
   } catch (error) {
     console.error("Error creating booking:", error);
