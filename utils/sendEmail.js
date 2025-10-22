@@ -10,7 +10,15 @@ export const sendBookingEmail = async (userEmail, bookingData) => {
       },
     });
 
-    const {movieTitle, poster, date, time, seats, totalAmount, paymentMethod} = bookingData;
+    const {
+      movieTitle,
+      poster,
+      date,
+      time,
+      seats,
+      totalAmount,
+      paymentMethod = "Khalti",
+    } = bookingData;
 
     const formattedSeats = seats.join(", ");
 
@@ -24,14 +32,14 @@ export const sendBookingEmail = async (userEmail, bookingData) => {
             
             <!-- Header -->
             <div style="background:#e50914;padding:20px;text-align:center;color:white;">
-              <img src="https://upload.wikimedia.org/wikipedia/en/c/cd/QFX_Cinemas_Logo.png" alt="QFX Logo" style="width:100px;margin-bottom:8px;" />
+              <img src="https://d346azgjfhsciq.cloudfront.net/S3/uploads/org_logo/1732596051296-qfx_square_logo_without_background0201_3.png" alt="QFX Logo" style="width:100px;margin-bottom:8px;background:contain;" />
               <h2 style="margin:0;font-size:22px;">Booking Confirmed!</h2>
               <p style="margin:0;font-size:14px;">Thank you for choosing QFX Cinemas 🍿</p>
             </div>
 
             <!-- Movie Poster -->
             <div style="text-align:center;padding:16px;">
-              <img src="${poster}" alt="${movieTitle}" style="width:100%;max-height:300px;object-fit:cover;border-radius:10px;" />
+              <img src="${poster}" alt="${movieTitle}" style=" width:100%;max-width:100%;height:auto;max-height:280px;border-radius:10px;display:block;margin:0 auto;object-fit:contain;" />
             </div>
 
             <!-- Booking Details -->
