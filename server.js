@@ -12,6 +12,7 @@ import contactRouter from "./routes/contactRoute.js";
 import movieDetailRouter from "./routes/movieDetailRouter.js";
 import adminRouter from "./routes/adminRoute.js";
 import bookingRouter from "./routes/bookingRoute.js";
+import paymentRouter from "./routes/paymentRoute.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -41,6 +42,7 @@ app.use("/api/movies", upcomingRouter);
 app.use("/api/contact", contactRouter);
 app.use("/api/bookings", bookingRouter);
 app.use("/api/admin", adminRouter);
+app.use("/api/khalti", paymentRouter);
 
 // Start the server
 app.listen(PORT, () => {
