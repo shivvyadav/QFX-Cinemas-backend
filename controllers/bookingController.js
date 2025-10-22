@@ -10,11 +10,14 @@ export const getMyBookings = async (req, res) => {
     if (!userId) return res.status(401).json({success: false, message: "Unauthorized"});
 
     // populate only 'show' because your Show schema does not have 'movie'
-    const bookings = await booking.find({user: userId}).populate({
-      path: "show",
-      model: "Show",
-      select: "title poster runtime showDateTime", // only these fields
-    });
+    const bookings = await booking
+      .find({user: userId})
+      .populate({
+        path: "show",
+        model: "Show",
+        select: "title poster runtime showDateTime", // only these fields
+      })
+      .sort({createdAt: -1});
 
     res.json({success: true, bookings});
   } catch (error) {
