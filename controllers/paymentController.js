@@ -10,7 +10,6 @@ export const createPayment = async (req, res) => {
     const response = await axios.post(
       "https://dev.khalti.com/api/v2/epayment/initiate/",
       {
-        // 👇 Use placeholder return URL that we'll replace on the frontend
         return_url: `${process.env.CLIENT_URL}/payment/verifyPayment`,
         website_url: process.env.CLIENT_URL,
         amount,
@@ -38,6 +37,7 @@ export const createPayment = async (req, res) => {
 
 // verify payment
 export const verifyPayment = async (req, res) => {
+  console.log(req.body);
   try {
     const userId = req.auth().userId;
     if (!userId) return res.status(401).json({success: false, message: "Unauthorized"});
